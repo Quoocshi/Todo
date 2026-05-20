@@ -2,6 +2,7 @@ package com.example.todo.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
@@ -34,13 +35,24 @@ class TaskWidgetReceiver : GlanceAppWidgetReceiver() {
 
 class TaskWidget : GlanceAppWidget() {
 
+    private val TAG = "TaskWidget"
+
     @SuppressLint("RestrictedApi")
     override suspend fun provideGlance(context: Context, id: GlanceId) {
+        Log.d(TAG, "provideGlance called for id: $id")
+        
         val tasks = withContext(Dispatchers.IO) {
             try {
+                Log.d(TAG, "Reading tasks from database...")
                 val database = AppDatabase.getDatabase(context)
-                database.taskDao().getAllTasks().take(5)
+                val taskList = database.taskDao().getAllTasks().take(5)
+                Log.d(TAG, "Found ${taskList.size} tasks from DB")
+                taskList.forEach { task ->
+                    Log.d(TAG, "  - ${task.taskName} (completed: ${task.isCompleted})")
+                }
+                taskList
             } catch (e: Exception) {
+                Log.e(TAG, "Error reading tasks", e)
                 emptyList()
             }
         }
@@ -90,5 +102,7 @@ class TaskWidget : GlanceAppWidget() {
                 }
             }
         }
+        
+        Log.d(TAG, "provideGlance completed for id: $id")
     }
 }

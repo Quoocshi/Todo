@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
 
+        <!-- Task Widget Receiver -->
         <receiver
             android:name=".widget.TaskWidgetReceiver"
             android:exported="true">
@@ -36,16 +37,10 @@
                 android:resource="@xml/widget_task_info" />
         </receiver>
 
+        <!-- Task Change Receiver for widget updates -->
         <receiver
             android:name=".widget.TaskChangeReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.example.todo.TASK_CREATED" />
-                <action android:name="com.example.todo.TASK_UPDATED" />
-                <action android:name="com.example.todo.TASK_DELETED" />
-                <action android:name="com.example.todo.REFRESH_WIDGET" />
-            </intent-filter>
-        </receiver>
+            android:exported="true" />
 
     </application>
 
