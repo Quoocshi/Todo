@@ -1,16 +1,24 @@
 package com.example.todo.ui.viewmodel
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todo.data.model.Task
 import com.example.todo.data.repository.TaskRepository
+import com.example.todo.widget.WidgetUpdater
 import kotlinx.coroutines.launch
 
 class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
 
     private val _taskList = mutableStateListOf<Task>()
     val taskList: List<Task> = _taskList
+
+    private var context: Context? = null
+
+    fun setContext(context: Context) {
+        this.context = context
+    }
 
     // tải dữ liệu ngay khi viewmodel được tạo
     init {
@@ -29,6 +37,7 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
         viewModelScope.launch {
             repository.insert(task)
             loadTasks()
+            context?.let { WidgetUpdater.updateWidget(it) }
         }
     }
 
@@ -42,6 +51,7 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
                 if (index != -1) {
                     _taskList[index] = updatedTask
                 }
+                context?.let { ctx -> WidgetUpdater.updateWidget(ctx) }
             }
         }
     }
@@ -50,6 +60,7 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
         viewModelScope.launch {
             repository.delete(task)
             _taskList.remove(task)
+            context?.let { WidgetUpdater.updateWidget(it) }
         }
     }
 }
