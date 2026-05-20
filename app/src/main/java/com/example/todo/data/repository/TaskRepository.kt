@@ -7,4 +7,5 @@ class TaskRepository(private val taskDao: TaskDao) {
     suspend fun delete(task: Task) = taskDao.deleteTask(task)
     suspend fun update(task: Task) = taskDao.updateTask(task)
     suspend fun getAllTasks() = taskDao.getAllTasks()
+    suspend fun getTasksDueOn(date: String) = taskDao.getTasksDueOn(date)
 }

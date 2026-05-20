@@ -30,7 +30,16 @@ fun AddTaskScreen(onBack: () -> Unit, onTaskSaved: (Task) -> Unit) {
     var showDatePicker by rememberSaveable { mutableStateOf(false) }
 
     val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = System.currentTimeMillis()
+        initialSelectedDateMillis = System.currentTimeMillis(),
+        selectableDates = object : SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                val today = LocalDate.now()
+                val selectedDate = Instant.ofEpochMilli(utcTimeMillis)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+                return !selectedDate.isBefore(today)
+            }
+        }
     )
 
     Scaffold(

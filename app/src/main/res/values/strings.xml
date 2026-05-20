@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Todo</string>
+    <string name="widget_description">Display your todo tasks on the home screen</string>
 </resources>

@@ -67,4 +67,10 @@ dependencies {
 
     implementation("androidx.room:room-ktx:$room_version")
 
+    // Glance for Widget
+    implementation("androidx.glance:glance-appwidget:1.1.0")
+    implementation("androidx.glance:glance-material3:1.1.0")
+
+    // WorkManager for Background Tasks (Notifications)
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 }
