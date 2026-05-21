@@ -24,7 +24,6 @@ fun MyNavigation(){
     val database = AppDatabase.getDatabase(context)
     val repository = TaskRepository(database.taskDao())
     val viewModel: TaskViewModel = viewModel(factory = TaskViewModelFactory(repository))
-    viewModel.setContext(context)
 
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Route.HomeScreen , builder = {
